@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_postings__postings
+    description: "Cleaned and standardized LinkedIn job postings data. Null handling, timestamp conversion and type casting were applied."
+
+  - name: stg_companies__companies
+    description: "Cleaned and standardized LinkedIn company data."
+
+  - name: stg_jobs__job_industries
+    description: "Standardized relationship between jobs and industries."
+
+  - name: stg_jobs__job_skills
+    description: "Standardized relationship between jobs and skills."
+
+  - name: stg_jobs__salaries
+    description: "Cleaned and standardized salary data."
+
+  - name: stg_mappings__industries
+    description: "Standardized industry lookup data."
+
+  - name: stg_mappings__skills
+    description: "Standardized skills lookup data."

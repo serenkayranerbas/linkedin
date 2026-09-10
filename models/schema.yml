@@ -1,0 +1,271 @@
+version: 2
+
+sources:
+  # --------------------------
+  # POSTINGS
+  # --------------------------
+  - name: postings
+    database: linkedin-job-postings-2324
+    schema: postings
+
+    tables:
+      - name: postings
+        identifier: postings
+        description: "Table that includes job postings details"
+        columns:
+          - name: job_id
+            description: "Unique identifier of the job posting"
+            tests:
+              - unique
+              - not_null
+          - name: company_name
+            description: "Name of the company that posted the job"
+          - name: title
+            description: "Job posting title"
+          - name: description
+            description: "Full text description of the job posting"
+          - name: max_salary
+            description: "Upper bound of the stated salary range"
+          - name: pay_period
+            description: "Pay period of the salary (e.g. YEARLY, HOURLY, MONTHLY)"
+          - name: location
+            description: "Location of the job posting"
+          - name: med_salary
+            description: "Stated median salary"
+          - name: min_salary
+            description: "Lower bound of the stated salary range"
+          - name: formatted_work_type
+            description: "Formatted work type (e.g. Full-time, Part-time)"
+          - name: job_posting_url
+            description: "Original URL of the job posting"
+          - name: application_url
+            description: "URL used to apply for the job"
+          - name: application_type
+            description: "Application type (e.g. OffsiteApply, ComplexOnsiteApply)"
+          - name: formatted_experience_level
+            description: "Formatted experience level (e.g. Entry level, Mid-Senior level)"
+          - name: skills_desc
+            description: "Free-text skills description on the posting"
+          - name: posting_domain
+            description: "Domain the posting was published on"
+          - name: sponsored
+            description: "Whether the posting is sponsored (0/1)"
+          - name: work_type
+            description: "Raw work type value"
+          - name: currency
+            description: "Currency of the salary"
+          - name: compensation_type
+            description: "Compensation type (e.g. BASE_SALARY)"
+          - name: normalized_salary
+            description: "Normalized/standardized salary value"
+          - name: expiry
+            description: "Expiration timestamp of the posting"
+     
+
+          - name: original_listed_time
+            description: "Original listing timestamp"
+          - name: closed_time
+            description: "Timestamp the posting was closed"
+          - name: listed_time
+            description: "Listing timestamp"
+          - name: views
+            description: "Number of views on the posting"
+          - name: applies
+            description: "Number of applications submitted"
+          - name: remote_allowed
+            description: "Whether remote work is allowed"
+          - name: zip_code
+            description: "Zip code of the posting location"
+
+  # --------------------------
+  # COMPANIES
+  # --------------------------
+  - name: companies
+    database: linkedin-job-postings-2324
+    schema: companies
+
+    tables:
+      - name: companies
+        identifier: companies
+        description: "Company information"
+        columns:
+          - name: company_id
+            description: "Unique identifier of the company"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Company name"
+            tests:
+              - not_null
+          - name: description
+            description: "Company description"
+          - name: company_size
+            description: "Company size bucket"
+          - name: state
+            description: "State of the company's HQ address"
+          - name: country
+            description: "Country of the company's HQ address"
+          - name: city
+            description: "City of the company's HQ address"
+          - name: zip_code
+            description: "Zip code of the company's HQ address"
+          - name: address
+            description: "Street address of the company"
+          - name: url
+            description: "LinkedIn company page URL"
+
+      - name: companies_master
+        identifier: companies_master
+        description: "Master company dataset"
+        # TODO: gerçek kolonlar INFORMATION_SCHEMA'dan doğrulanıp eklenecek
+
+      - name: company_industries
+        identifier: company_industries
+        description: "Relationship between companies and industries"
+        columns:
+          - name: company_id
+            description: "Foreign key to companies.company_id"
+            tests:
+              - not_null
+              - unique
+          - name: industry
+            description: "Industry name associated with the company"
+            tests:
+              - not_null
+              - unique
+
+      - name: company_specialities
+        identifier: company_specialities
+        description: "Company speciality information"
+        columns:
+          - name: company_id
+            description: "Foreign key to companies.company_id"
+            tests:
+              - not_null
+              - unique
+          - name: speciality
+            description: "Speciality associated with the company"
+            tests:
+              - not_null
+              - unique 
+      - name: employee_counts
+        identifier: employee_counts
+        description: "Historical employee and follower counts recorded per company"
+        columns:
+          - name: company_id
+            description: "Foreign key to companies.company_id"
+            tests:
+              - not_null
+          - name: employee_count
+            description: "Number of employees at time of recording"
+          - name: follower_count
+            description: "Number of LinkedIn followers at time of recording"
+          - name: time_recorded
+            description: "Timestamp the counts were recorded"
+
+  # --------------------------
+  # JOBS
+  # --------------------------
+  - name: jobs
+    database: linkedin-job-postings-2324
+    schema: jobs
+
+    tables:
+      - name: benefits
+        identifier: benefits
+        description: "Benefits listed on each job posting"
+        columns:
+          - name: job_id
+            description: "Foreign key to postings.job_id"
+            tests:
+              - not_null
+          - name: type
+            description: "Type of benefit (e.g. Medical, 401k)"
+          - name: inferred
+            description: "Whether the benefit was inferred rather than explicitly stated"
+
+      - name: job_industries
+        identifier: job_industries
+        description: "Relationship between job postings and industries"
+        columns:
+          - name: job_id
+            description: "Foreign key to postings.job_id"
+            tests:
+              - not_null
+          - name: industry_id
+            description: "Foreign key to industries.industry_id"
+            tests:
+              - not_null
+              - unique
+
+      - name: job_skills
+        identifier: job_skills
+        description: "Relationship between job postings and required skills"
+        columns:
+          - name: job_id
+            description: "Foreign key to postings.job_id"
+            tests:
+              - not_null
+          - name: skill_abr
+            description: "Foreign key to skills.skill_abr"
+            tests:
+              - not_null
+
+      - name: jobs_master
+        identifier: jobs_master
+        description: "Master/denormalized job posting dataset"
+        # TODO: gerçek kolonlar INFORMATION_SCHEMA'dan doğrulanıp eklenecek
+
+      - name: jobs_skills_master
+        identifier: jobs_skills_master
+        description: "Master table combining job postings with their associated skills"
+        # TODO: gerçek kolonlar INFORMATION_SCHEMA'dan doğrulanıp eklenecek
+
+      - name: salaries
+        identifier: salaries
+        description: "Salary details associated with job postings"
+        columns:
+          - name: salary_id
+            tests:
+              - not_null
+              - unique
+
+        # TODO: gerçek kolonlar INFORMATION_SCHEMA'dan doğrulanıp eklenecek
+
+  # --------------------------
+  # MAPPINGS
+  # --------------------------
+  - name: mappings
+    database: linkedin-job-postings-2324
+    schema: mappings
+
+    tables:
+      - name: industries
+        identifier: industries
+        description: "Lookup table mapping industry_id to industry name"
+        columns:
+          - name: industry_id
+            description: "Unique identifier of the industry"
+            tests:
+              - unique
+              - not_null
+          - name: industry_name
+            description: "Name of the industry"
+
+      - name: skills
+        identifier: skills
+        description: "Lookup table mapping skill abbreviation to skill name"
+        columns:
+          - name: skill_abr
+            description: "Unique abbreviation code for the skill"
+            tests:
+              - unique
+              - not_null
+          - name: skill_name
+            description: "Full name of the skill"
+
+
+          
+            
+              

@@ -36,7 +36,11 @@ renamed as (
         timestamp_millis(safe_cast(listed_time as int64)) as listed_time,
         views,
         applies,
-        remote_allowed,
+        CASE
+            WHEN remote_allowed = 1.0 THEN TRUE
+            WHEN remote_allowed = 0.0 THEN FALSE
+            ELSE NULL
+        END AS remote_allowed,
         zip_code,
 
         cast(safe_cast(fips as int64) as string) as fips,

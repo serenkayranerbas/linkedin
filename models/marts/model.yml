@@ -1,0 +1,44 @@
+version: 2
+
+models:
+
+  - name: mart_jobs
+    description: "İş ilanlarının temel bilgilerini analiz ve raporlama için bir araya getiren nihai mart modeli."
+    columns:
+      - name: job_id
+        tests:
+          - unique
+          - not_null
+      
+
+  - name: mart_jobs_salaries
+    description: "İş ilanlarını maaş bilgileriyle birleştirerek ücret ve pozisyon analizleri için hazırlanan mart modeli."
+    columns:
+      - name: industry_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart_sector
+    description: "İş ilanlarını sektör bilgileriyle birleştirerek sektör bazlı iş ilanı analizleri için hazırlanan mart modeli."
+    columns:
+      - name: company_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart_sector_benefits
+    description: "The “mart” model, which compiles industry and benefits data to enable the analysis of employee benefits by industry."
+    columns:
+      - name: salary_id
+        tests:
+          - unique
+          - not_null
+      - name: job_id
+        tests:
+          - unique
+          - not_null
+      - name: industry_id
+        tests:
+          - unique
+          - not_null

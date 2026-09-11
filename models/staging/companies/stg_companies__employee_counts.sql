@@ -1,3 +1,4 @@
+{{ config(materialized='table') }}
 with 
 
 source as (
@@ -12,7 +13,7 @@ renamed as (
         company_id,
         employee_count,
         follower_count,
-        safe_cast(time_recorded as datetime) as time_recorded
+        safe_cast(timestamp_seconds(time_recorded) as datetime) as time_recorded
 
     from source
 

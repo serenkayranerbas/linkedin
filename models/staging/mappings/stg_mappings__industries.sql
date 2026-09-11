@@ -10,7 +10,7 @@ renamed as (
 
     select
         industry_id,
-        industry_name
+        coalesce( industry_name, 'Unknown') as  industry_name
 
     from source
 

@@ -1,9 +1,9 @@
 # 📊 LinkedIn Job Postings Analyst
+
+
 ![LinkedIn Job Postings Dashboard Demo](linkedin-job-posting.gif)
 
 An end-to-end Data Analytics project analyzing **2023–2024 LinkedIn job postings in the United States**.
-
-This project was developed as part of the **Workintech Data Analyst Program**.
 
 ## 🎯 Project Overview
 
